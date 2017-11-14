@@ -28,6 +28,7 @@
 
 <script>
 import TabList from './TabList'
+import { EventBus } from '../../../client/globalConstants.js'
 
 export default {
   components: {
@@ -75,14 +76,16 @@ export default {
       tabPanes: []
     }
   },
-
   mounted () {
     this.update()
     if (this.realSelectedIndex === -1) {
       this.select(0)
     }
+    EventBus.$on('bulmaTabs', function (selectedTab) {
+      console.log(selectedTab)
+      this.selectedIndex = 3
+    })
   },
-
   methods: {
     update () {
       for (const tabPane of this.tabPanes) {
@@ -98,7 +101,7 @@ export default {
     },
 
     select (index) {
-      this.$emit('tab-selected', index)
+      EventBus.$emit('tab-selected', {'id':this.$el, 'index':index})
       this.realSelectedIndex = index
     }
   },
